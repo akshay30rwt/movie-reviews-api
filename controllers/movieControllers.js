@@ -156,12 +156,12 @@ const getReviewsByGenre = async (req, res) => {
 const sortReviewsByRating = async (req, res) => {
     try {
         const sortedReviews = await Movie.find().sort({
-            title: -1
+            rating: -1
         });
 
         if(sortedReviews.length === 0) {
             return res.status(404).json({
-                message: 'There are no Move Reviews'
+                message: 'There are no Movie Reviews'
             });
         }
 
