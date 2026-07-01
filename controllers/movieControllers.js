@@ -130,3 +130,48 @@ const deleteMovieReview = async (req, res) => {
         });
     }
 }
+
+const getReviewsByGenre = async (req, res) => {
+    try{
+        const { genre } = req.params;
+        const filteredReviews = await Movie.find({
+            genre: genre
+        });
+
+        if(filteredReviews.length === 0) {
+            return res.status(404).json({
+                message: `No Movie Review in ${genre} genre`
+            });
+        }
+
+        return res.status(200).json(filteredReviews);
+    }
+    catch(error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
+const sortReviewsByRating = async (req, res) => {
+    try {
+        const sortedReviews = await Movie.find().sort({
+            title: -1
+        });
+
+        if(sortedReviews.length === 0) {
+            return res.status(404).json({
+                message: 'There are no Move Reviews'
+            });
+        }
+
+        return res.status(200).json(sortedReviews);
+    }
+    catch(error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
+module.exports = { addReview, getReviewsAndSearchByTitle, getReviewById, updateMovieReview, deleteMovieReview, getReviewsByGenre, sortReviewsByRating }
