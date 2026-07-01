@@ -73,3 +73,60 @@ const getReviewById = async (req, res) => {
         });
     }
 }
+
+const updateMovieReview = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, genre, rating, review } = req.body;
+
+        const updatedReview = await Movie.findByIdAndUpdate(id, { title, genre, rating, review }, { new: true });
+        if(!updatedReview) {
+            return res.status(404).json({
+                message: `No Movie Review with ID: ${id}`
+            });
+        }
+
+        return res.status(200).json({
+            message: 'Movie Review updated successfully',
+            updatedReview
+        });
+    }
+    catch(error) {
+        if(error.name === 'CastError') {
+            return res.status(400).json({
+                message: 'Invalid ID'
+            });
+        }
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
+const deleteMovieReview = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedReview = await Movie.findByIdAndDelete(id);
+
+        if(!deletedReview) {
+            return res.status(404).json({
+                message: `No Movie Review with ID: ${id}`
+            });
+        }
+
+        return res.status(200).json({
+            message: 'Movie Review deleted successfully',
+            deletedReview
+        });
+    }
+    catch(error) {
+        if(error.name === 'CastError') {
+            return res.status(400).json({
+                message: 'Invalid ID'
+            });
+        }
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
