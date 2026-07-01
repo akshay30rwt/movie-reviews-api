@@ -41,6 +41,8 @@ const getReviewsAndSearchByTitle = async (req, res) => {
                 message: `No reviews for the movie: ${title}`
             });
         }
+
+        return res.status(200).json(filteredMovies);
     }
     catch(error) {
         return res.status(500).json({
